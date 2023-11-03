@@ -6,12 +6,18 @@ from urllib.parse import urlparse, parse_qs
 import requests
 from dotenv import load_dotenv
 import os
+import argparse
 
 load_dotenv()
 token = os.getenv('GITHUB_TOKEN')
 
 def main():
-    site = get_site('https://github.com/goemeritus/edsl/issues/56')
+    #! url needs to be in the following format : https://github.com/owner/repo/issues/56')
+    parser = argparse.ArgumentParser(description='Fetch and format GitHub issue history.')
+    parser.add_argument('url', help='The URL of the GitHub issue.')
+    args = parser.parse_args()
+
+    site = get_site(args.url)
     issue = get_issue_history(site)
     issue_str = format_issue(issue)
     return issue_str
